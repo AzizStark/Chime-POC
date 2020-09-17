@@ -124,7 +124,7 @@ export default class App extends React.Component {
         <input type='button' onClick={() => this.displaySharedVideoContent(this.state.session)} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Make streamer ready' />
         <input type='button' onClick={() => this.broadcastVideo(this.state.session, this.webcamRef.current.stream)} style={{ backgroundColor: 'violet', color: 'white' }} value='Start streaming' />
         <input type='button' id='buttn' onClick={() => this.openFullscreen()} style={{ backgroundColor: 'violet', color: 'white' }} value='Enter fullscreen' />
-        <video id="my-video-element"></video>
+        <video onPlay = {() => this.openFullscreen()} id="my-video-element"></video>
       </div>
     )
   }
