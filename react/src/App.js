@@ -26,10 +26,13 @@ export default class App extends React.Component {
     this.webcamRef = React.createRef();
   }
 
+  componentDidMount() {
+    this.getReady();
+  }
 
-  getConfigs = () => {
+  getConfigs = async () => {
     let meetData;
-    axios.get('http://localhost:4000/').then(res => {
+    await axios.get('http://localhost:4000/').then(res => {
       meetData = JSON.parse(res.data.body);
       console.log(meetData)
       this.setState({
@@ -39,7 +42,7 @@ export default class App extends React.Component {
     });
   }
 
-  connectToChimeMeeting = () => {
+  connectToChimeMeeting = async () => {
     const meetingConfig = new MeetingSessionConfiguration(this.state.meeting, this.state.attendee)
     const meetingSession = new DefaultMeetingSession(
       meetingConfig,
@@ -52,7 +55,7 @@ export default class App extends React.Component {
     console.log('Starting the Chime meeting!')
     meetingSession.audioVideo.start()
 
-    this.setState({
+    await this.setState({
       session: meetingSession
     })
   }
@@ -67,7 +70,7 @@ export default class App extends React.Component {
     })
   }
 
-  displaySharedVideoContent = (session) => {
+  displaySharedVideoContent = async (session) => {
     const observer = {
       // :: a tile represents a single instance of shared video content
       videoTileDidUpdate: tile => {
@@ -78,7 +81,7 @@ export default class App extends React.Component {
         session.audioVideo.bindVideoElement(tile.tileId, videoElement);
       }
     }
-    session.audioVideo.addObserver(observer);
+    await session.audioVideo.addObserver(observer);
   }
 
   trigger = () => {
@@ -99,6 +102,12 @@ export default class App extends React.Component {
     }
   }
 
+  getReady = async () => {
+     let a = await this.getConfigs()
+     let b = await this.connectToChimeMeeting()
+     let c = await this.displaySharedVideoContent(this.state.session)
+  }
+
   render() {
     const videoConstraints = {
       width: 1280,
@@ -109,13 +118,13 @@ export default class App extends React.Component {
     return (
       <div>
         <h1> CODA CHIME POC </h1>
-        <Webcam ref={this.webcamRef} videoConstraints={videoConstraints} audio="true" /> <br />
+        {/* <Webcam ref={this.webcamRef} videoConstraints={videoConstraints} audio="true" /> <br /> */}
         <input type='button' onClick={() => this.getConfigs()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Load confs' />
         <input type='button' onClick={() => this.connectToChimeMeeting()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Connect chime' />
         <input type='button' onClick={() => this.displaySharedVideoContent(this.state.session)} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Make streamer ready' />
         <input type='button' onClick={() => this.broadcastVideo(this.state.session, this.webcamRef.current.stream)} style={{ backgroundColor: 'violet', color: 'white' }} value='Start streaming' />
         <input type='button' id='buttn' onClick={() => this.openFullscreen()} style={{ backgroundColor: 'violet', color: 'white' }} value='Enter fullscreen' />
-        <video onPlay = {() => {this.trigger()}} id="my-video-element"></video>
+        <video id="my-video-element"></video>
       </div>
     )
   }
