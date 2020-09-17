@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import {
   ConsoleLogger,
   DefaultDeviceController,
@@ -13,7 +12,7 @@ import Webcam from "react-webcam";
 const logger = new ConsoleLogger('Chime Logs', LogLevel.INFO)
 const deviceController = new DefaultDeviceController(logger)
 
-export default class App extends React.Component {
+export default class Stream extends React.Component {
 
   constructor(props) {
     super(props);
@@ -21,13 +20,8 @@ export default class App extends React.Component {
       meeting: 'None',
       attendee: 'None',
       session: '',
-      isFullscreen: 'NO'
     };
     this.webcamRef = React.createRef();
-  }
-
-  componentDidMount() {
-    this.getReady();
   }
 
   getConfigs = async () => {
@@ -84,29 +78,6 @@ export default class App extends React.Component {
     await session.audioVideo.addObserver(observer);
   }
 
-  trigger = () => {
-    const elem = document.getElementById('buttn');
-    elem.click();
-  }
-
-  openFullscreen = () => {
-    const elem = document.getElementById('my-video-element');
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen();
-    }
-  }
-
-  getReady = async () => {
-     let a = await this.getConfigs()
-     let b = await this.connectToChimeMeeting()
-     let c = await this.displaySharedVideoContent(this.state.session)
-  }
 
   render() {
     const videoConstraints = {
@@ -114,17 +85,15 @@ export default class App extends React.Component {
       height: 720,
       facingMode: "user"
     };
+    const audio = true;
 
     return (
       <div>
         <h1> CODA CHIME POC </h1>
-        {/* <Webcam ref={this.webcamRef} videoConstraints={videoConstraints} audio="true" /> <br /> */}
+        <Webcam ref={this.webcamRef} videoConstraints={videoConstraints} audio={audio} /> <br />
         <input type='button' onClick={() => this.getConfigs()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Load confs' />
         <input type='button' onClick={() => this.connectToChimeMeeting()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Connect chime' />
-        <input type='button' onClick={() => this.displaySharedVideoContent(this.state.session)} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Make streamer ready' />
         <input type='button' onClick={() => this.broadcastVideo(this.state.session, this.webcamRef.current.stream)} style={{ backgroundColor: 'violet', color: 'white' }} value='Start streaming' />
-        <input type='button' id='buttn' onClick={() => this.openFullscreen()} style={{ backgroundColor: 'violet', color: 'white' }} value='Enter fullscreen' />
-        <video onPlay = {() => this.openFullscreen()} id="my-video-element"></video>
       </div>
     )
   }
