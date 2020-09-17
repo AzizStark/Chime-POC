@@ -32,12 +32,12 @@ export default class App extends React.Component {
 
   getConfigs = async () => {
     let meetData;
-    await axios.get('https://8cbfvjuwp2.execute-api.us-east-1.amazonaws.com/dev/').then(res => {
-      meetData = res.data;
-      console.log(meetData);
+    await axios.get('http://localhost:4000/').then(res => {
+      meetData = JSON.parse(res.data.body);
+      console.log(meetData)
       this.setState({
-        meeting: meetData.meetingResponse,
-        attendee: meetData.attendeeResponse
+        meeting: meetData.meeting,
+        attendee: meetData.attendee
       })
     });
   }
@@ -118,7 +118,7 @@ export default class App extends React.Component {
     return (
       <div>
         <h1> CODA CHIME POC </h1>
-        <Webcam ref={this.webcamRef} videoConstraints={videoConstraints} audio="true" /> <br />
+        {/* <Webcam ref={this.webcamRef} videoConstraints={videoConstraints} audio="true" /> <br /> */}
         <input type='button' onClick={() => this.getConfigs()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Load confs' />
         <input type='button' onClick={() => this.connectToChimeMeeting()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Connect chime' />
         <input type='button' onClick={() => this.displaySharedVideoContent(this.state.session)} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Make streamer ready' />
