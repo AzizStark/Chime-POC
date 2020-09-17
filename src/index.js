@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config()
 
 const http = require('http');
-
+const { v4: uuid } = require('uuid');
 const hostname = '127.0.0.1';
 const port = 4000;
 
@@ -12,7 +12,7 @@ const server = http.createServer( async (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   res.setHeader('Access-Control-Allow-Origin', '*');
   let meetResponse = await handler();
-  await res.end( JSON.stringify(meetResponse))
+  await res.end(JSON.stringify(meetResponse))
 });
 
 server.listen(port, hostname, () => {
@@ -34,7 +34,7 @@ chime.endpoint = new Endpoint('https://service.chime.aws.amazon.com/console');
 /** @returns {ChimeMeetingInstance} */
 async function createChimeMeeting() {
   const params = {
-    ClientRequestToken: 'some-random-string-of-your-choice',
+    ClientRequestToken: 'StarkMeeting',
     MediaRegion: 'us-west-2' // :: where your call is actually hosted
   }
   return await chime.createMeeting(params).promise()
@@ -48,7 +48,7 @@ async function createChimeAttendee(meetingInstance) {
 
   const params = {
     MeetingId:  meetingInstance.Meeting.MeetingId,
-    ExternalUserId: 'unique-user-identifierasdasd'
+    ExternalUserId: 'user1'
   }
 
   return await chime.createAttendee(params).promise()

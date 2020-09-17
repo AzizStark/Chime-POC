@@ -84,7 +84,7 @@ export default class App extends React.Component {
     return (
       <div>
         <h1> CODA CHIME POC </h1>
-        <Webcam ref={this.webcamRef} /> <br />
+        <Webcam ref={this.webcamRef} audio="true" /> <br />
         <input type='button' onClick={() => this.getConfigs()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Load confs' />
         <input type='button' onClick={() => this.connectToChimeMeeting()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Connect chime' />
         <input type='button' onClick={() => this.displaySharedVideoContent(this.state.session)}  style={{ backgroundColor: 'chocolate', color: 'white' }} value='Make streamer ready' />
