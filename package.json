@@ -85,6 +85,7 @@
   "dependencies": {
     "aws-sdk": "^2.753.0",
     "core-js": "^3.6.4",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "react-full-screen": "^0.3.1"
   }
 }
