@@ -20,7 +20,8 @@ export default class App extends React.Component {
     this.state = {
       meeting: 'None',
       attendee: 'None',
-      session: ''
+      session: '',
+      isFullscreen: 'NO'
     };
     this.webcamRef = React.createRef();
   }
@@ -74,22 +75,47 @@ export default class App extends React.Component {
 
         // :: TODO: get a video element specifically for this tile
         const videoElement = document.getElementById('my-video-element')
-        session.audioVideo.bindVideoElement(tile.tileId, videoElement)
+        session.audioVideo.bindVideoElement(tile.tileId, videoElement);
       }
     }
     session.audioVideo.addObserver(observer);
   }
 
+  trigger = () => {
+    const elem = document.getElementById('buttn');
+    elem.click();
+  }
+
+  openFullscreen = () => {
+    const elem = document.getElementById('my-video-element');
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+      elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+      elem.msRequestFullscreen();
+    }
+  }
+
   render() {
+    const videoConstraints = {
+      width: 1280,
+      height: 720,
+      facingMode: "user"
+    };
+
     return (
       <div>
         <h1> CODA CHIME POC </h1>
-        <Webcam ref={this.webcamRef} audio="true" /> <br />
+        <Webcam ref={this.webcamRef} videoConstraints={videoConstraints} audio="true" /> <br />
         <input type='button' onClick={() => this.getConfigs()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Load confs' />
         <input type='button' onClick={() => this.connectToChimeMeeting()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Connect chime' />
-        <input type='button' onClick={() => this.displaySharedVideoContent(this.state.session)}  style={{ backgroundColor: 'chocolate', color: 'white' }} value='Make streamer ready' />
-        <input type='button' onClick={() => this.broadcastVideo(this.state.session, this.webcamRef.current.stream)}  style={{ backgroundColor: 'violet', color: 'white' }} value='Start streaming' />
-        <video id="my-video-element"></video>
+        <input type='button' onClick={() => this.displaySharedVideoContent(this.state.session)} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Make streamer ready' />
+        <input type='button' onClick={() => this.broadcastVideo(this.state.session, this.webcamRef.current.stream)} style={{ backgroundColor: 'violet', color: 'white' }} value='Start streaming' />
+        <input type='button' id='buttn' onClick={() => this.openFullscreen()} style={{ backgroundColor: 'violet', color: 'white' }} value='Enter fullscreen' />
+        <video onPlay = {() => {this.trigger()}} id="my-video-element"></video>
       </div>
     )
   }
