@@ -34,7 +34,7 @@ chime.endpoint = new Endpoint('https://service.chime.aws.amazon.com/console');
 /** @returns {ChimeMeetingInstance} */
 async function createChimeMeeting() {
   const params = {
-    ClientRequestToken: 'StarkMeeting',
+    ClientRequestToken: 'testExternalMeetingID',
     MediaRegion: 'us-west-2' // :: where your call is actually hosted
   }
   return await chime.createMeeting(params).promise()

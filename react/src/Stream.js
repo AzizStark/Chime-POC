@@ -52,6 +52,15 @@ export default class Stream extends React.Component {
     await this.setState({
       session: meetingSession
     })
+
+    const audioOutputDevices = await meetingSession.audioVideo.listAudioOutputDevices();
+    const videoInputDevices = await meetingSession.audioVideo.listVideoInputDevices();
+    const audioInputDevices = await meetingSession.audioVideo.listAudioInputDevices();
+    
+    // An array of MediaDeviceInfo objects
+    await audioInputDevices.forEach(mediaDeviceInfo => {
+      console.log(`Device ID: ${mediaDeviceInfo.deviceId} Microphone: ${mediaDeviceInfo.label}`);
+    });
   }
 
   /**
