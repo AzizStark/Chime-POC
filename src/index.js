@@ -48,7 +48,7 @@ async function createChimeAttendee(meetingInstance) {
 
   const params = {
     MeetingId:  meetingInstance.Meeting.MeetingId,
-    ExternalUserId: 'user1'
+    ExternalUserId: 'user2'
   }
 
   return await chime.createAttendee(params).promise()
