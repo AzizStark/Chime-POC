@@ -24,7 +24,7 @@ export default class View extends React.Component {
     }
     getConfigs = async () => {
         let meetData;
-        await axios.get('https://8cbfvjuwp2.execute-api.us-east-1.amazonaws.com/dev/user1').then(res => {
+        await axios.get('https://8cbfvjuwp2.execute-api.us-east-1.amazonaws.com/dev/user5').then(res => {
           meetData = res.data;
           console.log(meetData);
           this.setState({
@@ -78,15 +78,7 @@ export default class View extends React.Component {
     }
     render() {
         return (
-            <div style={{ background: '#000', display: 'flex', width: '100vw', height: '100vh'}}>
-                {/* <h1> CODA CHIME POC </h1>
-                <input type='button' onClick={() => this.getConfigs()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Load confs' />
-                <input type='button' onClick={() => this.connectToChimeMeeting()} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Connect chime' />
-                <input type='button' onClick={() => this.displaySharedVideoContent(this.state.session)} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Make streamer ready' />  */}
-                {/* <input type='button' onClick={() => this.displaySharedVideoContent(this.state.session)} style={{ backgroundColor: 'chocolate', color: 'white' }} value='Make streamer ready' /> */}
-                <audio id="my-audio-element"></audio>
-                <video style={{width: '100%', height: '100%'}} id="my-video-element"></video>
-            </div>
+            <div style={{ background: '#000', display: 'flex', width: '100vw', height: '100vh'}}><audio id="my-audio-element"></audio><video style={{width: '100%', height: '100%'}} id="my-video-element"></video></div>
         )
     }
 }
