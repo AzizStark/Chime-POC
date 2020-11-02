@@ -3,6 +3,7 @@ pacmd load-module module-virtual-sink sink_name=v1  # Load a virtual sink as `v1
 pacmd set-default-sink v1  # Set the `v1` as the default sink device
 pacmd set-default-source v1.monitor  # Set the monitor of the v1 sink to be the default source
 
+
 Xvfb :2 -ac -screen 0 1920x1080x24 > /dev/null 2>&1 &
 
 firefox --no-remote --new-instance --createprofile "foo4 /tmp/foo4"
@@ -13,6 +14,7 @@ curl -s -O http://ciscobinary.openh264.org/openh264-linux64-2e1774ab6dc6c43debb0
 unzip openh264-linux64-2e1774ab6dc6c43debb0b5b628bdf122a391d521.zip
 rm -f openh264-linux64-2e1774ab6dc6c43debb0b5b628bdf122a391d521.zip
 popd >& /dev/null
+
 
 cat <<EOF >> /tmp/foo4/prefs.js
 user_pref("media.autoplay.default", 0);
