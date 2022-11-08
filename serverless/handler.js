@@ -2,6 +2,7 @@
 const AWS = require('aws-sdk');
 const { v4: uuid } = require('uuid');
 
+const id = uuid();
 const chime = new AWS.Chime({ region: 'us-east-1' }) // :: has to be us-east-1 for now
 chime.endpoint = new AWS.Endpoint('https://service.chime.aws.amazon.com/console');
 
@@ -9,7 +10,7 @@ module.exports.hello = async (event) => {
 
   const meetingResponse = await chime.createMeeting({
     ClientRequestToken: 'Meeting',
-    ExternalMeetingId: "testExternalMeetingID",
+    ExternalMeetingId: id,
     MediaRegion: 'us-west-2' // Specify the region in which to create the meeting.
   }).promise();
   
@@ -29,5 +30,4 @@ module.exports.hello = async (event) => {
     },
     body: JSON.stringify(payload)
   };
-
 };
